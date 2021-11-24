@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
+import { LongPressGestureHandler } from 'react-native-gesture-handler';
 import RegisterComponent from '../../components/SignUp';
 import envs from '../../config/env';
+import register from '../../context/actions/auth/register';
+import axiosInstance from '../../helpers/axiosIntercepter';
 
-const Register = ({ firstName: any }) => {
+const Register = () => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
 
-  console.log('BACKEND_URL :>>', envs);
+  // console.log(`form`, form);
+
+  useEffect(() => {
+    axiosInstance.get('/contacts').catch((err) => {
+      // console.log(`err`, err.response);
+    });
+  }, []);
+  // const { DEV_BACKEND_URL } = envs;
+  // // console.log(envs);
+  // // console.log(BACKEND_URL);
+  // console.log('backend url test:', DEV_BACKEND_URL);
+  // console.log('BACKEND_URL :>>', { envs });
+  // console.log('__DEV__', __DEV__);
 
   const onChange = ({ name, value }) => {
     setForm({ ...form, [name]: value });
@@ -38,7 +53,7 @@ const Register = ({ firstName: any }) => {
   };
 
   const onSubmit = () => {
-    console.log('form :>>', form);
+    // console.log('form :>>', form);
 
     if (!form.userName) {
       setErrors((prev) => {
@@ -64,6 +79,13 @@ const Register = ({ firstName: any }) => {
       setErrors((prev) => {
         return { ...prev, password: 'Please enter a valid password' };
       });
+    }
+    if (
+      Object.values(form).length === 5 &&
+      Object.values(form).every((item) => item.trim().length > 0) &&
+      Object.values(errors).every((item) => !item)
+    ) {
+      register(form);
     }
     // validations
   };

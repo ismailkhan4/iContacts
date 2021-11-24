@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/ahmed/Documents/iContacts/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-be/values-be.xml",
+            "outputFile": "/home/ahmed/Downloads/iContacts/iContacts/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-be/values-be.xml",
             "map": [
                 {
                     "source": "/home/ahmed/.gradle/caches/transforms-3/5646db46e2cfb43e7b3d42f3054c498c/transformed/core-1.5.0/res/values-be/values-be.xml",
