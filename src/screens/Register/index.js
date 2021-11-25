@@ -38,9 +38,12 @@ const Register = () => {
 
   useFocusEffect(
     useCallback(() => {
-      if (data || error) {
-        clearAuthState()(authDispatch);
-      }
+      console.log(`111`, 111);
+      return () => {
+        if (data || error) {
+          clearAuthState()(authDispatch);
+        }
+      };
     }, [data, error])
   );
 

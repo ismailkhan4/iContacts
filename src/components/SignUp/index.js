@@ -5,6 +5,7 @@ import { LOGIN } from '../../constants/routeNames';
 import Container from '../common/Container';
 import CustomButton from '../common/CustomButton';
 import Input from '../common/Input';
+import Message from '../common/Message';
 import styles from './styles';
 
 const RegisterComponent = ({
@@ -26,6 +27,16 @@ const RegisterComponent = ({
         <Text style={styles.title}>Welcome to iContact</Text>
         <Text style={styles.subTitle}>Create a free account</Text>
         <View style={styles.form}>
+          {error?.error && (
+            <Message
+              retry
+              danger
+              retryFn={() => {
+                console.log(`222`, 222);
+              }}
+              message={error?.error}
+            />
+          )}
           <Input
             label='Username'
             placeholder='Enter Username'
@@ -69,7 +80,7 @@ const RegisterComponent = ({
               onChange({ name: 'password', value });
             }}
           />
-          {console.log(`error`, error)}
+          {/* {console.log(`error`, error)} */}
           <CustomButton
             loading={loading}
             onPress={onSubmit}

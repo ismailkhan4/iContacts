@@ -1,17 +1,18 @@
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { GlobalContext } from '../context/Provider';
 import AuthNavigator from './AuthNavigator';
 import DrawerNavigator from './DrawerNavigator';
 
 const AppNavContainer = () => {
+  const {
+    authState: { isLoggedIn },
+  } = useContext(GlobalContext);
 
-  const {authState:{isLoggedIn}} = useContext(GlobalContext)
-
-  console.log(isLoggedIn)
+  // console.log('isLoggedIn', isLoggedIn);
   return (
     <NavigationContainer>
-      {isLoggedIn?<DrawerNavigator /> : <AuthNavigator />}
+      {isLoggedIn ? <DrawerNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };
