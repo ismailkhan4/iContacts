@@ -4,7 +4,7 @@ import envs from '../config/env';
 
 let headers = {};
 
-let axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: envs.DEV_BACKEND_URL,
   headers,
 });

@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { LongPressGestureHandler } from 'react-native-gesture-handler';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import RegisterComponent from '../../components/SignUp';
 import envs from '../../config/env';
-import register from '../../context/actions/auth/register';
-import axiosInstance from '../../helpers/axiosIntercepter';
+import { LOGIN } from '../../constants/routeNames';
+import register, { clearAuthState } from '../../context/actions/auth/register';
+import { GlobalContext } from '../../context/Provider';
+import axios from '../../helpers/axiosIntercepter';
 
 const Register = () => {
   const [form, setForm] = useState({});
+  const { navigate } = useNavigation();
   const [errors, setErrors] = useState({});
+  const {
+    authDispatch,
+    authState: { error, loading, data },
+  } = useContext(GlobalContext);
+  // console.log(`authState`, authState:{error,loading,data});
 
   // console.log(`form`, form);
-
-  useEffect(() => {
-    axiosInstance.get('/contacts').catch((err) => {
-      // console.log(`err`, err.response);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axiosInstance.get('/contacts').catch((err) => {
+  //     console.log(`err`, err.response);
+  //   });
+  // }, []);
   // const { DEV_BACKEND_URL } = envs;
   // // console.log(envs);
   // // console.log(BACKEND_URL);
@@ -24,8 +30,23 @@ const Register = () => {
   // console.log('BACKEND_URL :>>', { envs });
   // console.log('__DEV__', __DEV__);
 
+  useEffect(() => {
+    if (data) {
+      navigate(LOGIN);
+    }
+  }, [data]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (data || error) {
+        clearAuthState()(authDispatch);
+      }
+    }, [data, error])
+  );
+
   const onChange = ({ name, value }) => {
     setForm({ ...form, [name]: value });
+
     if (value !== '') {
       if (name == 'password') {
         if (value.length < 6) {
@@ -85,7 +106,8 @@ const Register = () => {
       Object.values(form).every((item) => item.trim().length > 0) &&
       Object.values(errors).every((item) => !item)
     ) {
-      register(form);
+      console.log(`111`, 111);
+      register(form)(authDispatch);
     }
     // validations
   };
@@ -96,6 +118,8 @@ const Register = () => {
       onChange={onChange}
       form={form}
       errors={errors}
+      error={error}
+      loading={loading}
     />
   );
 };
